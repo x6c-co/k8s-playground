@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: ./docker/app/Dockerfile
+    volumes:
+      - '.:/usr/share/nginx/html'
+    networks:
+      - my_network
+  nginx:
+    build:
+      context: ./
+      dockerfile: ./docker/nginx/Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+    networks:
+      - my_network
+networks:
+    my_network:
+        driver: bridge

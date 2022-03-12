@@ -1,0 +1,18 @@
+{
+    "name": "x6c/k8s-playground",
+    "description": "k8s playground",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "x6c\\KubernetesPlayground\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Levi Durfee",
+            "email": "levi@x6c.co"
+        }
+    ],
+    "require": {}
+}

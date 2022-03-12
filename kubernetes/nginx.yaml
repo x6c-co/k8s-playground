@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    tier: backend
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: nginx
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: nginx
+        tier: backend
+    spec:
+      containers:
+      - name: nginx
+        image: levidurfee/pg-nginx
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 100m
+            memory: 20Mi
+          limits:
+            cpu: 120m
+            memory: 24Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  labels:
+    tier: backend
+spec:
+  selector:
+    app: nginx
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 80
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nginx
+  namespace: default
+spec:
+  maxReplicas: 100
+  minReplicas: 5
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx
+  targetCPUUtilizationPercentage: 65
